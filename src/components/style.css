@@ -1,0 +1,112 @@
+body,
+html,
+canvas {
+  width: 100vw;
+  height: 100vh;
+  margin:0;
+  padding:0;
+  background-color: #2D3047;
+  background-image: linear-gradient(147deg, #2D3047 0%, #eae6e5 74%);
+}
+
+* {
+  box-sizing: border-box;
+}
+/* Item Page Styling */
+.item {
+  background: #fafdff;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.info {
+  margin: 30px 30px 15px 0;
+  padding: 30px;
+}
+
+.buttonRow {
+  margin-top: 80px;
+}
+
+/* Possible Item Colors */
+.colorButton {
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+  border-color:#e6e6e6 ;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  /* background: linear-gradient(145deg, #e6e6e6, #ffffff); */
+  box-shadow:  20px 20px 60px #d9d9d9,
+             -20px -20px 60px #ffffff;
+}
+
+#buy{
+  float:right;
+  margin-top: 0px;
+  border-radius: 7px;
+}
+/* Keeps color buttons on item page from colliding on resize */
+@media screen and (max-width: 929px ) {
+  .colorButton,
+  #buy {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-device-width: 575px ) {
+  canvas {
+    width:100%;
+    height: 100%;
+  }
+  .info {
+    margin: 30px;
+    padding: 30px;
+  }
+
+}
+
+/* Navbar Styling */
+.mainNav {
+  height: 50px;
+
+}
+
+ /* Cart Styling */
+ .cart{
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25vw;
+  height: 100vh;
+  background: var(--onyx);
+  padding: 40px;
+  z-index: 100;
+  min-width: 230px;
+ }
+  /* ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 0;
+    margin: 0 0 1rem;
+    font-size: 2rem;
+  }
+
+    a {
+      text-decoration: none;
+      color: white;
+      border-bottom: 2px transparent solid;
+      transition: 0.3s ease border;
+    }
+      a::hover {
+        border-bottom: 2px var(--purple) solid;
+    } */
+
