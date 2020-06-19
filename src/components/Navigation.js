@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import Cart from "./Cart";
+import FontAwesome from "./FontAwesome";
 
 function Navigation() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -26,7 +27,8 @@ function Navigation() {
             isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true)
           }
         >
-          <i className="fas fa-shopping-cart" style={{ fontSize: "20px" }}></i>
+          {/* If cart is closed, show cart fontAwesome, if it's open, change font to an x */}
+          <FontAwesome isCartOpen={isCartOpen} />
         </Button>
       </Navbar>
       {isCartOpen ? <Cart /> : <></>}
