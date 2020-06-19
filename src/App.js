@@ -7,7 +7,7 @@ import Navigation from "./components/Navigation";
 // import Cart from "./components/Cart";
 
 const commerce = new Commerce(
-  "pk_test_18265006f98e5bc6f77efa3b7d99014bf7e1a31d0e6a3"
+  "pk_test_183505c17b9df667acd2e6f925c4957b715322209303f"
 );
 
 function App() {

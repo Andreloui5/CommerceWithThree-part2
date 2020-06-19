@@ -22,7 +22,7 @@ export default function Model(props) {
   // we take the return value from the gltfjsx generated file, and put into this switch function
   function switchItem(item) {
     switch (item) {
-      case "Jacket":
+      case "fleecejacket":
         return (
           <group ref={group} dispose={null} castShadow receiveShadow>
             <group rotation={[-Math.PI / 2, 0, 0]}>
