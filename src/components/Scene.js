@@ -37,7 +37,7 @@ export default function Model(props) {
           </group>
         );
 
-      case "Shoe":
+      case "vansshoe":
         return (
           <group ref={group} dispose={null} castShadow receiveShadow>
             <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -47,6 +47,22 @@ export default function Model(props) {
                 geometry={nodes.mesh_0.geometry}
                 scale={[0.3, 0.3, 0.3]}
               />
+            </group>
+          </group>
+        );
+
+      case "plaintshirt":
+        return (
+          <group ref={group} dispose={null} castShadow receiveShadow>
+            <group rotation={[-Math.PI / 2, 0, 0]}>
+              <group rotation={[Math.PI / 2, 0, 0]}>
+                <mesh
+                  material={materials.lambert1}
+                  material-color={props.color}
+                  geometry={nodes.UV_d_lambert1_0.geometry}
+                  scale={[0.8, 0.8, 0.8]}
+                />
+              </group>
             </group>
           </group>
         );

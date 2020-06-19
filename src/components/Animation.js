@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import Controls from "./Controls";
 import Model from "./Scene";
 import { Canvas } from "react-three-fiber";
+import Loader from "./Loader";
 
 function Animation(props) {
   return (
@@ -23,18 +24,18 @@ function Animation(props) {
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
-        <ambientLight intensity={4} />
-        <pointLight intensity={6} position={[-10, -25, -10]} />
+        <ambientLight intensity={0.5} />
+        <pointLight intensity={1} position={[-10, -25, -10]} />
         <spotLight
           castShadow
-          intensity={8}
+          intensity={1}
           angle={Math.PI / 8}
           position={[25, 25, 15]}
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
         />
 
-        <Suspense fallback={null}>
+        <Suspense fallback={<Loader />}>
           <Model {...props} />
         </Suspense>
       </Canvas>
