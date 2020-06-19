@@ -3,7 +3,7 @@ import { Navbar, Nav, Button } from "react-bootstrap";
 import Cart from "./Cart";
 
 function Navigation() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
     <>
@@ -22,12 +22,14 @@ function Navigation() {
         </Nav>
         <Button
           variant="dark"
-          onClick={() => (isNavOpen ? setIsNavOpen(false) : setIsNavOpen(true))}
+          onClick={() =>
+            isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true)
+          }
         >
           <i className="fas fa-shopping-cart" style={{ fontSize: "20px" }}></i>
         </Button>
       </Navbar>
-      {isNavOpen ? <Cart /> : <></>}
+      {isCartOpen ? <Cart /> : <></>}
     </>
   );
 }

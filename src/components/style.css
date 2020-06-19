@@ -73,20 +73,18 @@ h2 {
 /* Navbar Styling */
 .mainNav {
   height: 50px;
-
 }
 
  /* Cart Styling */
  .cart{
   position: fixed;
-  top: 0;
+  top: 50px;
   right: 0;
-  width: 25vw;
   height: 100vh;
-  background: var(--onyx);
+  background: #2D3047;
   padding: 40px;
   z-index: 100;
-  min-width: 230px;
+  /* min-width: 230px; */
  }
   /* ul {
     list-style: none;
