@@ -7,17 +7,20 @@ title: Advanced Game Characters - Week 2 Jacket
 */
 
 import React, { useRef } from "react";
-import { useLoader } from "react-three-fiber";
+import { useLoader, useFrame } from "react-three-fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { draco } from "drei";
 
 export default function Model(props) {
   const group = useRef();
+
   const { nodes, materials } = useLoader(
     GLTFLoader,
     `../${props.permalink}/scene.gltf`,
     draco("/draco-gltf/")
   );
+
+  useFrame(() => (group.current.rotation.y += 0.003));
 
   // we take the return value from the gltfjsx generated file, and put into this switch function
   function switchItem(item) {

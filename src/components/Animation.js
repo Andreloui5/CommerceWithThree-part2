@@ -15,17 +15,15 @@ function Animation(props) {
         shadowMap
       >
         <Controls
-          autoRotate
           enablePan={false}
           enableZoom={false}
           enableDamping
           dampingFactor={0.5}
-          rotateSpeed={1}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
         <ambientLight intensity={0.5} />
-        <pointLight intensity={1} position={[-10, -25, -10]} />
+        {/* <pointLight intensity={1} position={[-10, -25, -10]} /> */}
         <spotLight
           castShadow
           intensity={1}
