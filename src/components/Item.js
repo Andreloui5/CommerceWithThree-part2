@@ -7,7 +7,7 @@ import "./style.css";
 // Build a card that will show our products
 function Item(props) {
   const [color, setColor] = useState();
-
+  const [optionId, setOptionId] = useState();
   // need to take out the pTags included with description string
   // if value is null(the default), returns empty string
   const description =
@@ -16,6 +16,13 @@ function Item(props) {
       : "";
 
   const variantsAvailable = props.variants !== undefined;
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    optionId !== null
+      ? props.addToCart(props.id, 1, { [props.variants[0].id]: optionId })
+      : console.log("error adding item to cart");
+  };
 
   return (
     <Row className="item">
@@ -41,7 +48,8 @@ function Item(props) {
                     backgroundColor: props.variants[1].options[index].name,
                   }}
                   onClick={() =>
-                    setColor(props.variants[1].options[index].name)
+                    setColor(props.variants[1].options[index].name) &&
+                    setOptionId(props.variants[0].options[index].id)
                   }
                 ></Button>
               ))}
@@ -51,11 +59,9 @@ function Item(props) {
           )}
           <Col style={{ textAlign: "right" }}>
             <p>Price: {props.price.formatted_with_symbol}</p>
-            <a href={props.checkout_url.display}>
-              <Button id="buy" variant="primary">
-                Buy Now
-              </Button>
-            </a>
+            <Button id="buy" variant="primary" onClick={handleAddToCart}>
+              Add to Cart
+            </Button>
           </Col>
         </Row>
       </Col>

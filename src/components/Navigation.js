@@ -3,7 +3,7 @@ import { Navbar, Nav, Button } from "react-bootstrap";
 import Cart from "./Cart";
 import FontAwesome from "./FontAwesome";
 
-function Navigation() {
+function Navigation({ ...cart }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
@@ -16,22 +16,22 @@ function Navigation() {
         style={{ zIndex: 20 }}
       >
         <Navbar.Brand href="#home">Commerce</Navbar.Brand>
-        <Nav className="mr-auto">
-          {/* <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link> */}
-        </Nav>
+        <Nav className="mr-auto"></Nav>
         <Button
+          id="cartButton"
           variant="dark"
           onClick={() =>
             isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true)
           }
         >
           {/* If cart is closed, show cart fontAwesome, if it's open, change font to an x */}
-          <FontAwesome isCartOpen={isCartOpen} />
+          <FontAwesome
+            isCartOpen={isCartOpen}
+            number={cart.total_unique_items}
+          />
         </Button>
       </Navbar>
-      {isCartOpen ? <Cart /> : <></>}
+      <Cart isCartOpen={isCartOpen} {...cart} />
     </>
   );
 }

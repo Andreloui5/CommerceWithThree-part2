@@ -48,11 +48,13 @@ function Item(props) {
           )}
           <Col style={{ textAlign: "right" }}>
             <p>Price: {props.price.formatted_with_symbol}</p>
-            <a href={props.checkout_url.display}>
-              <Button id="buy" variant="primary">
-                Buy Now
-              </Button>
-            </a>
+            <Button
+              id="buy"
+              variant="primary"
+              // onClick={() => handleAddToCart(props.id, color)}
+            >
+              Add to Cart
+            </Button>
           </Col>
         </Row>
       </Col>
