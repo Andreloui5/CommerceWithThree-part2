@@ -27,7 +27,7 @@ function Item(props) {
   return (
     <Row className="item">
       <Col sm={6} style={{ padding: 0 }}>
-        <Animation {...props} color={color} />
+        <Animation {...props} uniqueId={props.id} color={color} />
       </Col>
       <Col className="info">
         <h2>{props.name}</h2>

@@ -27,10 +27,10 @@ function App() {
       setCart(res.cart);
     });
   };
-  console.log(cart);
+
   return (
     <div>
-      <Navigation {...cart} />
+      <Navigation cart={cart} products={products} />
       {/* maps through products and returns alternating views */}
       {products.map((product, index) =>
         index % 2 === 0 ? (

@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import Animation from "./Animation";
 
 const CartItem = (props) => {
+  console.log(props);
   return (
     <>
       <Row>

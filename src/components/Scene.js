@@ -16,7 +16,7 @@ export default function Model(props) {
 
   const { nodes, materials } = useLoader(
     GLTFLoader,
-    `../${props.permalink}/scene.gltf`,
+    `../${props.uniqueId}/scene.gltf`,
     draco("/draco-gltf/")
   );
 
@@ -25,7 +25,7 @@ export default function Model(props) {
   // we take the return value from the gltfjsx generated file, and put into this switch function
   function switchItem(item) {
     switch (item) {
-      case "fleecejacket":
+      case "prod_0egY5edW2o3QnA":
         return (
           <group ref={group} dispose={null} castShadow receiveShadow>
             <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -40,21 +40,21 @@ export default function Model(props) {
           </group>
         );
 
-      case "vansshoe":
-        return (
-          <group ref={group} dispose={null} castShadow receiveShadow>
-            <group rotation={[-Math.PI / 2, 0, 0]}>
-              <mesh
-                material={materials.Blue_Vans_Shoe}
-                material-color={props.color}
-                geometry={nodes.mesh_0.geometry}
-                scale={[0.3, 0.3, 0.3]}
-              />
-            </group>
-          </group>
-        );
+      // case "vansshoe":
+      //   return (
+      //     <group ref={group} dispose={null} castShadow receiveShadow>
+      //       <group rotation={[-Math.PI / 2, 0, 0]}>
+      //         <mesh
+      //           material={materials.Blue_Vans_Shoe}
+      //           material-color={props.color}
+      //           geometry={nodes.mesh_0.geometry}
+      //           scale={[0.3, 0.3, 0.3]}
+      //         />
+      //       </group>
+      //     </group>
+      //   );
 
-      case "plaintshirt":
+      case "prod_8XxzoBMgZwPQAZ":
         return (
           <group ref={group} dispose={null} castShadow receiveShadow>
             <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -74,5 +74,5 @@ export default function Model(props) {
         return;
     }
   }
-  return <>{switchItem(props.permalink)}</>;
+  return <>{switchItem(props.uniqueId)}</>;
 }

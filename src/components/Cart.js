@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import CartItem from "./CartItem";
 import "./style.css";
@@ -18,13 +18,13 @@ function Cart(props) {
         }
   );
 
-  const checkForLoad = props.line_items !== undefined ? true : false;
-
   return (
     <animated.div className="cart" style={showCart}>
       <>
-        {checkForLoad ? (
-          props.line_items.map((item) => <CartItem key={item.id} {...item} />)
+        {props.cart !== undefined ? (
+          props.cart.line_items.map((item) => (
+            <CartItem key={item.id} uniqueId={item.product_id} {...item} />
+          ))
         ) : (
           <></>
         )}
