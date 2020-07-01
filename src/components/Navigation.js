@@ -21,21 +21,22 @@ function Navigation(props) {
           id="cartButton"
           variant="dark"
           onClick={() =>
-            isCartOpen
-              ? props.refreshCartInfo && setIsCartOpen(false)
-              : setIsCartOpen(true)
+            isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true)
           }
         >
           {/* If cart is closed, show cart fontAwesome, if it's open, change font to an x */}
-          <FontAwesome isCartOpen={isCartOpen} number={props.numberOfItems} />
+          <FontAwesome
+            isCartOpen={isCartOpen}
+            numberOfItems={props.numberOfItems}
+          />
         </Button>
       </Navbar>
       <Cart
         isCartOpen={isCartOpen}
         cart={props.cart}
         products={props.products}
-        number={props.numberOfItems}
         updateCart={props.updateCart}
+        removeItemFromCart={props.removeItemFromCart}
       />
     </>
   );

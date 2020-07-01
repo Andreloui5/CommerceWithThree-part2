@@ -135,10 +135,20 @@ h2 {
 }
 
 .quantityButton{
-  height: 25px;
-  width: 25px;
-  font-size: 12px;
-  border-radius: 50px;
+  height: 27px;
+  width: 27px;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: .1px;
+  border-color:#30334c ;
   background: linear-gradient(45deg, #30334c, #292b40);
-  box-shadow:  5px -5px 8px #202232, -5px 5px 8px #3a3e5c;
+  box-shadow:  20px 20px 60px #202232, -20px -20px 60px #3a3e5c;
+}
+
+span .fas {
+  color: #ffffff;
+}
+
+.fa-trash {
+  float:right;
 }

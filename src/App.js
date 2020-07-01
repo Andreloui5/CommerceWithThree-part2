@@ -13,6 +13,7 @@ function App() {
   const [cart, setCart] = useState();
   const [numberOfItems, setNumberOfItems] = useState("");
 
+  // on Component Mount, retrieve cart and list products
   useEffect(() => {
     commerce.cart.retrieve().then((res) => {
       setCart(res);
@@ -22,30 +23,34 @@ function App() {
     });
   }, []);
 
+  // whenever cart changes, list number of items in cart
+  // handles undefined state (while call to commerce is made)
   useEffect(() => {
     cart !== undefined
       ? setNumberOfItems(cart.total_items)
       : setNumberOfItems("");
   }, [cart]);
 
+  //adds products to the cart (both via a call to commerce, and locally)
   const addToCart = (productId, variantInfo) => {
     commerce.cart.add(productId, variantInfo).then((res) => {
       setCart(res.cart);
     });
   };
 
-  const refreshCartInfo = () => {
-    commerce.cart.retrieve().then((res) => {
-      setCart(res);
-    });
-  };
-
+  // if count of an item is 0, deletes item from cart.
+  // otherwise, updates cart info via call to commerce and local state update
   const updateCart = (itemId, count) => {
     count === 0
       ? commerce.cart.remove(itemId).then((res) => setCart(res.cart))
-      : commerce.cart
-          .update(itemId, { quantity: count })
-          .then((res) => setCart(res.cart));
+      : commerce.cart.update(itemId, { quantity: count }).then((res) => {
+          setCart(res.cart);
+        });
+  };
+
+  //removes item from commerce's cart, and sets local cart state
+  const removeItemFromCart = (itemId) => {
+    commerce.cart.remove(itemId).then((res) => setCart(res.cart));
   };
 
   return (
@@ -54,18 +59,13 @@ function App() {
         cart={cart}
         products={products}
         numberOfItems={numberOfItems}
-        refreshCartInfo={refreshCartInfo}
         updateCart={updateCart}
+        removeItemFromCart={removeItemFromCart}
       />
       {/* maps through products and returns alternating views */}
       {products.map((product, index) =>
         index % 2 === 0 ? (
-          <Item
-            key={product.id}
-            {...product}
-            addToCart={addToCart}
-            // emptyCart={emptyCart}
-          />
+          <Item key={product.id} {...product} addToCart={addToCart} />
         ) : (
           <ItemRight key={product.id} addtoCart={addToCart} {...product} />
         )
