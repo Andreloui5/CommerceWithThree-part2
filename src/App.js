@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Commerce from "@chec/commerce.js";
 import Item from "./components/Item";
-// import ItemRight from "./components/ItemRight";
+import ItemRight from "./components/ItemRight";
 import Navigation from "./components/Navigation";
 
 const commerce = new Commerce(
@@ -11,10 +11,10 @@ const commerce = new Commerce(
 function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState();
+  const [numberOfItems, setNumberOfItems] = useState("");
 
   useEffect(() => {
     commerce.cart.retrieve().then((res) => {
-      // console.log(res);
       setCart(res);
     });
     commerce.products.list().then((res) => {
@@ -22,15 +22,41 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    cart !== undefined
+      ? setNumberOfItems(cart.total_items)
+      : setNumberOfItems("");
+  }, [cart]);
+
   const addToCart = (productId, variantInfo) => {
     commerce.cart.add(productId, variantInfo).then((res) => {
       setCart(res.cart);
     });
   };
 
+  const refreshCartInfo = () => {
+    commerce.cart.retrieve().then((res) => {
+      setCart(res);
+    });
+  };
+
+  const updateCart = (itemId, count) => {
+    count === 0
+      ? commerce.cart.remove(itemId).then((res) => setCart(res.cart))
+      : commerce.cart
+          .update(itemId, { quantity: count })
+          .then((res) => setCart(res.cart));
+  };
+
   return (
     <div>
-      <Navigation cart={cart} products={products} />
+      <Navigation
+        cart={cart}
+        products={products}
+        numberOfItems={numberOfItems}
+        refreshCartInfo={refreshCartInfo}
+        updateCart={updateCart}
+      />
       {/* maps through products and returns alternating views */}
       {products.map((product, index) =>
         index % 2 === 0 ? (
@@ -41,9 +67,7 @@ function App() {
             // emptyCart={emptyCart}
           />
         ) : (
-          <></>
-
-          /* <ItemRight key={product.id} addtoCart={addToCart} {...product} /> */
+          <ItemRight key={product.id} addtoCart={addToCart} {...product} />
         )
       )}
     </div>

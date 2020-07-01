@@ -59,7 +59,11 @@ function Item(props) {
           )}
           <Col style={{ textAlign: "right" }}>
             <p>Price: {props.price.formatted_with_symbol}</p>
-            <Button id="buy" variant="primary" onClick={handleAddToCart}>
+            <Button
+              className="addToCart"
+              variant="primary"
+              onClick={handleAddToCart}
+            >
               Add to Cart
             </Button>
           </Col>

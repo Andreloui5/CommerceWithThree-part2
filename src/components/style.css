@@ -12,6 +12,10 @@ canvas {
 * {
   box-sizing: border-box;
 }
+
+.sr-only {
+  z-index: 1;
+}
 /* Item Page Styling */
 .item {
   background: #fafdff;
@@ -45,15 +49,16 @@ h2 {
              -20px -20px 60px #ffffff;
 }
 
-#buy{
+.addToCart{
   float:right;
   margin-top: 0px;
   border-radius: 7px;
 }
+
 /* Keeps color buttons on item page from colliding on resize */
 @media screen and (max-width: 929px ) {
   .colorButton,
-  #buy {
+  .addToCart {
     margin-top: 10px;
   }
 }
@@ -84,8 +89,19 @@ h2 {
   background: #2D3047;
   padding: 40px;
   z-index: 100;
+  overflow: scroll;
   /* min-width: 230px; */
  }
+
+.cart p {
+  color: #ffffff;
+}
+.cart h4 {
+  color: #ffffff;
+}
+.cart h3 {
+  color: #ffffff;
+}
 
 #cartNumber {
   color: #ffffff;
@@ -100,6 +116,29 @@ h2 {
 
 .cartItem {
   padding: 0;
-  min-height: 200px;
-  min-width: 200px;
+  max-block-size: inherit;
+}
+
+.cartInfo {
+  margin-top: 20px;
+}
+
+#total{
+  float: right;
+  margin-top: 20px;
+}
+
+#buy {
+  float: right;
+  border-radius: 7px;
+  margin: 10px 0 80px;
+}
+
+.quantityButton{
+  height: 25px;
+  width: 25px;
+  font-size: 12px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #30334c, #292b40);
+  box-shadow:  5px -5px 8px #202232, -5px 5px 8px #3a3e5c;
 }
