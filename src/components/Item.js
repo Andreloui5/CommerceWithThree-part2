@@ -24,6 +24,19 @@ function Item(props) {
       : console.log("error adding item to cart");
   };
 
+  // This takes in a string (color name combined with hex color) and splits them
+  const splitNameFromHex = (input) => {
+    return input.split(" ");
+  };
+
+  // defining variants makes the map below a lot cleaner to read
+  const variants = props.variants[0].options;
+
+  const handleColorChoice = (index) => {
+    setColor(splitNameFromHex(variants[index].name)[1]);
+    setOptionId(variants[index].id);
+  };
+
   return (
     <Row className="item">
       <Col sm={6} style={{ padding: 0 }}>
@@ -40,17 +53,14 @@ function Item(props) {
             <Col>
               <p>Available Colors:</p>
               {/* maps through the different color variants, dynamically providing id name (to match CSS) and then provides correct hex color options */}
-              {props.variants[0].options.map((variant, index) => (
+              {variants.map((variant, index) => (
                 <Button
-                  key={props.variants[1].options[index].name}
+                  key={splitNameFromHex(variants[index].name)[0]}
                   className={"colorButton"}
                   style={{
-                    backgroundColor: props.variants[1].options[index].name,
+                    backgroundColor: splitNameFromHex(variants[index].name)[1],
                   }}
-                  onClick={() =>
-                    setColor(props.variants[1].options[index].name) &&
-                    setOptionId(props.variants[0].options[index].id)
-                  }
+                  onClick={() => handleColorChoice(index)}
                 ></Button>
               ))}
             </Col>
