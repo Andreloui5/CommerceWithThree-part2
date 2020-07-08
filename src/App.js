@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Commerce from "@chec/commerce.js";
 import Item from "./components/Item";
-import ItemRight from "./components/ItemRight";
 import Navigation from "./components/Navigation";
 
 const commerce = new Commerce(
@@ -15,11 +14,11 @@ function App() {
 
   // on Component Mount, retrieve cart and list products
   useEffect(() => {
-    commerce.cart.retrieve().then((res) => {
-      setCart(res);
-    });
     commerce.products.list().then((res) => {
       setProducts(res.data);
+    });
+    commerce.cart.retrieve().then((res) => {
+      setCart(res);
     });
   }, []);
 
@@ -63,13 +62,9 @@ function App() {
         removeItemFromCart={removeItemFromCart}
       />
       {/* maps through products and returns alternating views */}
-      {products.map((product, index) =>
-        index % 2 === 0 ? (
-          <Item key={product.id} {...product} addToCart={addToCart} />
-        ) : (
-          <ItemRight key={product.id} addtoCart={addToCart} {...product} />
-        )
-      )}
+      {products.map((product) => (
+        <Item key={product.id} {...product} addToCart={addToCart} />
+      ))}
     </div>
   );
 }

@@ -40,19 +40,19 @@ export default function Model(props) {
           </group>
         );
 
-      // case "vansshoe":
-      //   return (
-      //     <group ref={group} dispose={null} castShadow receiveShadow>
-      //       <group rotation={[-Math.PI / 2, 0, 0]}>
-      //         <mesh
-      //           material={materials.Blue_Vans_Shoe}
-      //           material-color={props.color}
-      //           geometry={nodes.mesh_0.geometry}
-      //           scale={[0.3, 0.3, 0.3]}
-      //         />
-      //       </group>
-      //     </group>
-      //   );
+      case "prod_RqEv5xOVPoZz4j":
+        return (
+          <group ref={group} dispose={null} castShadow receiveShadow>
+            <group rotation={[-Math.PI / 2, 0, 0]}>
+              <mesh
+                material={materials.Blue_Vans_Shoe}
+                material-color={props.color}
+                geometry={nodes.mesh_0.geometry}
+                scale={[0.3, 0.3, 0.3]}
+              />
+            </group>
+          </group>
+        );
 
       case "prod_8XxzoBMgZwPQAZ":
         return (

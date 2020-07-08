@@ -5,6 +5,7 @@ import { Canvas } from "react-three-fiber";
 import Loader from "./Loader";
 
 function Animation(props) {
+  console.log(props);
   return (
     <>
       <Canvas

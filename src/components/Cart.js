@@ -8,7 +8,7 @@ function Cart(props) {
   const showCart = useSpring(
     props.isCartOpen
       ? {
-          width: "30%",
+          width: "50%",
           background: "#2D3047",
           opacity: 1,
         }

@@ -8,13 +8,7 @@ function Navigation(props) {
 
   return (
     <>
-      <Navbar
-        bg="dark"
-        variant="dark"
-        sticky="top"
-        className="mainNav"
-        style={{ zIndex: 20 }}
-      >
+      <Navbar bg="dark" variant="dark" sticky="top" className="mainNav">
         <Navbar.Brand href="#home">Commerce</Navbar.Brand>
         <Nav className="mr-auto"></Nav>
         <Button

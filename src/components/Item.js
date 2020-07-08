@@ -17,24 +17,28 @@ function Item(props) {
 
   const variantsAvailable = props.variants !== undefined;
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    optionId !== null
-      ? props.addToCart(props.id, 1, { [props.variants[0].id]: optionId })
-      : console.log("error adding item to cart");
-  };
-
   // This takes in a string (color name combined with hex color) and splits them
   const splitNameFromHex = (input) => {
     return input.split(" ");
   };
 
   // defining variants makes the map below a lot cleaner to read
-  const variants = props.variants[0].options;
+  let variants;
+  // checks for available variants in the product
+  variantsAvailable
+    ? (variants = props.variants[0].options)
+    : (variants = null);
 
   const handleColorChoice = (index) => {
     setColor(splitNameFromHex(variants[index].name)[1]);
     setOptionId(variants[index].id);
+  };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    variants !== null
+      ? props.addToCart(props.id, 1, { [props.variants[0].id]: optionId })
+      : props.addToCart(props.id);
   };
 
   return (
