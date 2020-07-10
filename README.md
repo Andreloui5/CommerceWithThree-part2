@@ -6,7 +6,7 @@ This guide uses the [Commerce.js](https://commercejs.com/) SDK (v2), and is a co
 
 [View the live demo](INSERT LINK HERE).
 
-![Product detail page example](MAKE NEW HOMEPAGE GIF and INSERT HERE)
+![Cart example](public/assets/Cart.gif)
 
 ## Overview
 
@@ -50,11 +50,13 @@ If you haven't done so already, create a [Chec](https://authorize.chec.io/signup
 
 ![Chec Products Tab](public/assets/Products.png)
 
-You'll want to add a few products to your list, just as you added the Fleece Jacket in the last guide. (Click **Add Product** and enter information into the required fields.)
+You'll want to add a few products to your list, just as you added the Fleece Jacket in the last guide. (Click **Add Product** and enter information into the required fields).
 
-The new models this guide uses can be found [here](https://sketchfab.com/3d-models/advanced-game-characters-week-2-jacket-8f211f057bb24f5db17ca659553b716b) and [here](https://sketchfab.com/3d-models/game-res-shirt-for-male-character-629d138b40054e01b82af4541e2bc16c).
+This guide will be using a "Cotton T-Shirt" and "Vans Shoe". Both the [Cotton T-Shirt](https://sketchfab.com/3d-models/game-res-shirt-for-male-character-629d138b40054e01b82af4541e2bc16c) and the [Vans Shoe](https://sketchfab.com/3d-models/unused-blue-vans-shoe-96baa4684df7415ba8ba87d39bd1c2ee) can be downloaded for free from [sketchfab.com](https://sketchfab.com/feed).
 
-Instead of adding only the name of the color option (Blue, Red, or Flax), include the hex value of that color, as well. So your variant options for  will look something like: "Blue #80CED7", "Flax #E9D985", and "Red #BF211E".
+Instead of adding only the name of the color option (Red, Blue, etc.) in the T-Shirt's variant section, include the hex value of that color as well. For example, this guide uses the color/hex values "Green #228B22", "Yellow #FFFF00", "White #FFFFFF", and "Purple #9400D3".
+
+Leave the variants section empty for the shoe.
 
 Click **Save Changes** at the bottom of the page and open your code editor.
 
@@ -73,12 +75,13 @@ In addition to the files you have already created, you'll want to add six more t
 ```
 **3. Adding CSS**
 
-Since this guide is not primarily focused on styling, add replace the content in your styles.css folder with the following code.
+Since this guide is not primarily focused on styling, feel free to simply replace the content in your styles.css folder with the following code.
 
 <details>
 <summary>Click to show css</summary>
 
 ```css
+/* style.css */
 body,
 html,
 canvas {
@@ -267,7 +270,7 @@ useEffect(() => {
   }, [cart]);
 ```
 
-Since you will be handling the state of your cart in App.js, you will also need to add handlers for adding, updating, and removing items from your cart. These handlers can then be passed down to other components via `props`.
+Since you will be handling the state of your cart in App.js, you will also need to add handlers for adding, updating, and removing items from your cart. These handlers can then be passed down to other components via `props`. Also, if you would like to know more about the various mehods used here, check out the [Commerce.js documentation](https://commercejs.com/docs/examples/add-to-cart.html).
 
 To add products to your cart:
 ```js
@@ -294,10 +297,202 @@ And to remove an item from the cart:
   };
 ```
 
-**5.Adding a Navigation Bar**
+**5.Modifying Item.js**
 
-The next step in this project is adding a navigation bar and cart icon. To begin, move to the `Navigation.js` file you added earlier. Create a new component with the following code:
+[The last guide](https://github.com/Andreloui5/CommerceWithThree) kept `Item.js` as simple as possible— and because of that, it is not easily reusable. You can make it easily reusable (and thus scalable) by drilling into the `cart` object returned from `commerce`.
+
+Also, to add cart functionality, you will need to change the "Buy Now" button into an "Add to Cart" button by passing down the `addToCart()` function that you just declared in `App.js`.
+
+Start by making a variable called `variantsAvailable`.
 ```js
+const variantsAvailable = props.variants !== undefined;
+```
+This (combined with a ternary operator in the return section of the component) will enable `Item.js` to render properly if a product does not have any variants.
+
+Additionally, since you combined the color name and hex value into one variant, write a function that will split the two apart, so that they can be used independently of one another.
+```js
+ const splitNameFromHex = (input) => {
+    return input.split(" ");
+  };
+```
+
+Since you need to drill fairly far into the `cart` object to access the particulars of an item's variants, it is a good idea to make a variable that will simplify how your code reads. Combining this variable with a ternary operator lets you deal with any items that do not have variants.
+
+```js
+let variants;
+  // checks for available variants in the product
+  variantsAvailable
+    ? (variants = props.variants[0].options)
+    : (variants = null);
+```
+
+Now make handlers for picking variant colors and for adding items to your `cart`.
+
+```js
+  const handleColorChoice = (index) => {
+    setColor(splitNameFromHex(variants[index].name)[1]);
+    setOptionId(variants[index].id);
+  };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    variants !== null
+    //adds a product with a specific variant to your cart
+      ? props.addToCart(props.id, 1, { [props.variants[0].id]: optionId })
+    //adds a product, but doesn't specify a variant
+      : props.addToCart(props.id);
+  };
+```
+
+Now `Item.js` can be reused and scaled with just a few changes to what is returned.
+
+```js
+  return (
+    <Row className="item">
+      <Col sm={6} style={{ padding: 0 }}>
+        <Animation {...props} uniqueId={props.id} color={color} />
+      </Col>
+      <Col className="info">
+        <h2>{props.name}</h2>
+        <br />
+        <br />
+        <p>{description}</p>
+        <Row className="buttonRow">
+          {/* checks for available color variants, and either renders buttons or an empty column */}
+          {variantsAvailable ? (
+            <Col>
+              <p>Available Colors:</p>
+              {/* maps through the different color variants, dynamically providing id name (to match CSS) and providing correct hex color options */}
+              {variants.map((variant, index) => (
+                <Button
+                  key={splitNameFromHex(variants[index].name)[0]}
+                  className={"colorButton"}
+                  style={{
+                    backgroundColor: splitNameFromHex(variants[index].name)[1],
+                  }}
+                  onClick={() => handleColorChoice(index)}
+                ></Button>
+              ))}
+            </Col>
+          ) : (
+            <Col></Col>
+          )}
+          <Col style={{ textAlign: "right" }}>
+            <p>Price: {props.price.formatted_with_symbol}</p>
+            <Button
+              className="addToCart"
+              variant="primary"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </Button>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
+  );
+}
+```
+
+
+<details>
+<summary>Click to see the finished `Item` component</summary>
+
+```js
+//Item.js
+import React, { useState } from "react";
+import { Button, Col, Row } from "react-bootstrap";
+import Animation from "./Animation";
+import "./style.css";
+
+function Item(props) {
+  const [color, setColor] = useState();
+  const [optionId, setOptionId] = useState();
+
+  const description =
+    props.description !== null
+      ? props.description.slice(3, props.description.length - 4)
+      : "";
+
+  const variantsAvailable = props.variants !== undefined;
+
+  const splitNameFromHex = (input) => {
+    return input.split(" ");
+  };
+
+  let variants;
+
+  variantsAvailable
+    ? (variants = props.variants[0].options)
+    : (variants = null);
+
+  const handleColorChoice = (index) => {
+    setColor(splitNameFromHex(variants[index].name)[1]);
+    setOptionId(variants[index].id);
+  };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    variants !== null
+      ? props.addToCart(props.id, 1, { [props.variants[0].id]: optionId })
+      : props.addToCart(props.id);
+  };
+
+  return (
+    <Row className="item">
+      <Col sm={6} style={{ padding: 0 }}>
+        <Animation {...props} uniqueId={props.id} color={color} />
+      </Col>
+      <Col className="info">
+        <h2>{props.name}</h2>
+        <br />
+        <br />
+        <p>{description}</p>
+        <Row className="buttonRow">
+          {variantsAvailable ? (
+            <Col>
+              <p>Available Colors:</p>
+              {variants.map((variant, index) => (
+                <Button
+                  key={splitNameFromHex(variants[index].name)[0]}
+                  className={"colorButton"}
+                  style={{
+                    backgroundColor: splitNameFromHex(variants[index].name)[1],
+                  }}
+                  onClick={() => handleColorChoice(index)}
+                ></Button>
+              ))}
+            </Col>
+          ) : (
+            <Col></Col>
+          )}
+          <Col style={{ textAlign: "right" }}>
+            <p>Price: {props.price.formatted_with_symbol}</p>
+            <Button
+              className="addToCart"
+              variant="primary"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </Button>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
+  );
+}
+
+export default Item;
+```
+</details>
+
+
+**6.Adding a Navigation Bar**
+
+The next step in this project is adding a navigation bar and cart icon. To begin, move to the `Navigation.js` file you added earlier. Create a new component that uses the `useState()` method to keep track of whether the user has toggled the cart open or closed.
+
+```js
+// Navigation.js
 import React, { useState } from "react";
 import { Navbar, Nav, Button } from "react-bootstrap";
 
@@ -328,10 +523,11 @@ function Navigation(props) {
 
 export default Navigation;
 ```
-You will notice that the bootstrapped Navbar is taking advantage of `useState()` to keep track of whether the user has toggled the cart open or closed.
 
-To set up the cart icon for your button, create a functional component in `FontAwesome.js`.
+To set up a cart icon that can be displayed in your navbar, open `FontAwesome.js` and create the following component.
+
 ```js
+// FontAwesome.js
 import React from "react";
 
 const FontAwesome = ({ isCartOpen, numberOfItems }) => {
@@ -349,9 +545,9 @@ const FontAwesome = ({ isCartOpen, numberOfItems }) => {
 };
 export default FontAwesome;
 ```
-This components uses conditional logic to display only an icon if the user's cart is empty. If the user has added items to his or her cart, however, the number of items in the cart is displayed alongside the cart icon
+This component uses conditional logic to display only a shopping cart icon if the user's `cart` is empty. If the user has added items to his or her `cart`, however, the number of items in the cart is displayed alongside the cart icon.
 
-Now, import `FontAwesome` into `Navigation.js` and place it inside `<Button>`.
+Now, import `FontAwesome` into `Navigation.js` and place it inside of the `<Button>` in your navbar. You will also need to pass the state of `isCartOpen` and the current `numberOfItems` to `FontAwesome` via props.
 ```js
   <FontAwesome
     isCartOpen={isCartOpen}
@@ -359,16 +555,16 @@ Now, import `FontAwesome` into `Navigation.js` and place it inside `<Button>`.
   />
 ```
 
-**6. Making the Cart Itself**
+**7. Making the Cart Itself**
 
 Next, turn your attention to `Cart.js`. Import `useSpring` and `animated` from `react-spring`. Then, instead of returning a regular `<div>`, return an `<animated.div>`. This allows react spring to animate the component. You will also need to specify the parameters of the animation. (If you want to know more about what this animation library can do, check out [react spring](https://www.react-spring.io/)).
 
-For this guide, use the hook `useSpring()`. This allows you to smoothly animate styling between the cart's open or closed states.
+For this guide, you will need the `useSpring()` hook. This allows you to smoothly animate styling between the cart's open and closed states.
 ```js
 const showCart = useSpring(
     props.isCartOpen
       ? {
-          width: "50%",
+          width: "40%",
           background: "#2D3047",
           opacity: 1,
         }
@@ -380,9 +576,10 @@ const showCart = useSpring(
   );
 ```
 
-The return value itself is a nested conditional statement. The first handles the undefined state that comes while waiting for your call to commerce to complete. The second conditional toggles the cart's display between a message (if the cart is empty) and the cart's contents (once the user has added an item).
+The return value is a nested conditional statement. The first conditional statement handles the undefined state that comes while waiting for your call to commerce to complete. The second conditional toggles the cart's display between a message (if the cart is empty) and the cart's contents (once the user has added an item).
 
 `Commerce` makes it easy to map through the `line_items` that a user adds to the `cart`. For this guide, you can use the following code to set up your cart:
+
 ```js
 <>
   {props.cart.line_items.map((item) => (
@@ -416,9 +613,10 @@ The return value itself is a nested conditional statement. The first handles the
 All together `Cart.js` should look something like this:
 
 <details>
-<summary>Click to show `Cart.js`</summary>
+<summary>Click to see the finished `Cart` component</summary>
 
 ```js
+// Cart.js
 import React from "react";
 import { useSpring, animated } from "react-spring";
 import { Row, Col, Button } from "react-bootstrap";
@@ -489,3 +687,308 @@ function Cart(props) {
 export default Cart;
 ```
 </details>
+
+**8. Making the Cart Item**
+
+In the code above, there is a component that you haven't yet made— the `CartItem`. So make that component now. You have already been passing down the `updateCart()` and `removeItemFromCart()` functions that you created in App.js, which are now joined by each line item's individual properties.
+
+When creating the CartItem component, first integrate your functions into `onClick` event handlers.
+
+```js
+  const handleIncrement = (e) => {
+    e.preventDefault();
+    props.updateCart(props.id, props.quantity + 1);
+  };
+
+  const handleDecrement = (e) => {
+    e.preventDefault();
+    props.updateCart(props.id, props.quantity - 1);
+  };
+
+  const handleRemove = (e) => {
+    e.preventDefault();
+    props.removeItemFromCart(props.id);
+  };
+```
+Then you can return a bootstrapped component that displays the appropriate animation, product details, and buttons to change the quantity of the item.
+
+```js
+return (
+    <div>
+      <Row style={{ maxHeight: "250px" }}>
+        <Col className="cartItem">
+          <Animation {...props} />
+        </Col>
+      </Row>
+      <Row className="cartInfo">
+        <Col xs={9}>
+          <h4>{props.name}</h4>
+        </Col>
+        <Col xs={3}>
+          <h4> {props.price.formatted_with_symbol}</h4>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={10}>
+          <p>
+            Quantity:{" "}
+            <span>
+              <button className="quantityButton" onClick={handleDecrement}>
+                <i className="fas fa-minus"></i>
+              </button>
+            </span>{" "}
+            {props.quantity}{" "}
+            <span>
+              <button className="quantityButton" onClick={handleIncrement}>
+                <i className="fas fa-plus"></i>
+              </button>
+            </span>
+          </p>
+        </Col>
+        <Col xs={2}>
+          <span>
+            <button className="quantityButton" onClick={handleRemove}>
+              <i className="fas fa-trash"></i>
+            </button>
+          </span>
+        </Col>
+      </Row>
+    </div>
+```
+
+<details>
+<summary>Click to see the finished `CartItem` component</summary>
+
+```js
+//CartItem.js
+import React from "react";
+import { Col, Row } from "react-bootstrap";
+import Animation from "./Animation";
+
+const CartItem = (props) => {
+  const handleIncrement = (e) => {
+    e.preventDefault();
+    props.updateCart(props.id, props.quantity + 1);
+  };
+
+  const handleDecrement = (e) => {
+    e.preventDefault();
+    props.updateCart(props.id, props.quantity - 1);
+  };
+
+  const handleRemove = (e) => {
+    e.preventDefault();
+    props.removeItemFromCart(props.id);
+  };
+
+  return (
+    <>
+      <Row style={{ maxHeight: "250px" }}>
+        <Col className="cartItem">
+          <Animation {...props} />
+        </Col>
+      </Row>
+      <Row className="cartInfo">
+        <Col xs={9}>
+          <h4>{props.name}</h4>
+        </Col>
+        <Col xs={3}>
+          <h4> {props.price.formatted_with_symbol}</h4>
+        </Col>
+        <Col xs={10}>
+          <p>
+            Quantity:{" "}
+            <span>
+              <button className="quantityButton" onClick={handleDecrement}>
+                <i className="fas fa-minus"></i>
+              </button>
+            </span>{" "}
+            {props.quantity}{" "}
+            <span>
+              <button className="quantityButton" onClick={handleIncrement}>
+                <i className="fas fa-plus"></i>
+              </button>
+            </span>
+          </p>
+        </Col>
+        <Col xs={2}>
+          <span>
+            <button className="quantityButton" onClick={handleRemove}>
+              <i className="fas fa-trash"></i>
+            </button>
+          </span>
+        </Col>
+      </Row>
+    </>
+  );
+};
+
+export default CartItem;
+```
+</details>
+
+
+**9. Different Animations in Scene.js**
+
+`Commerce` makes it easy to reference specific items by giving each one a `uniqueId`. In the last guide, you used a custom permalink as a variable to link to the appropriate scene.gltf file. For this guide, use each item's `uniqueId`.
+
+```js
+const { nodes, materials } = useLoader(
+    GLTFLoader,
+    `../${props.uniqueId}/scene.gltf`,
+    draco("/draco-gltf/")
+  );
+```
+Then set up a switch statement that includes the return value from each item's gltfjsx generated file.
+
+```js
+ function switchItem(item) {
+    switch (item) {
+      case "prod_RqEv5xOVPoZz4j":
+        return (
+          <group
+            ref={group}
+            dispose={null}
+            castShadow
+            receiveShadow
+            position={[0, -0.5, 0]}
+          >
+            <group rotation={[-Math.PI / 2, 0, 0]}>
+              <mesh
+                material={materials.Blue_Vans_Shoe}
+                material-color={props.color}
+                geometry={nodes.mesh_0.geometry}
+                scale={[0.3, 0.3, 0.3]}
+              />
+            </group>
+          </group>
+        );
+
+      case "prod_8XxzoBMgZwPQAZ":
+        return (
+          <group ref={group} dispose={null} castShadow receiveShadow>
+            <group rotation={[-Math.PI / 2, 0, 0]}>
+              <group rotation={[Math.PI / 2, 0, 0]}>
+                <mesh
+                  material={materials.lambert1}
+                  material-color={props.color}
+                  geometry={nodes.UV_d_lambert1_0.geometry}
+                  scale={[0.8, 0.8, 0.8]}
+                />
+              </group>
+            </group>
+          </group>
+        );
+
+      default:
+        return;
+    }
+  }
+```
+
+<details>
+<summary>lick to see the finished `Scene` component </summary>
+
+```js
+import React, { useRef } from "react";
+import { useLoader, useFrame } from "react-three-fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { draco } from "drei";
+
+export default function Model(props) {
+  const group = useRef();
+
+  const { nodes, materials } = useLoader(
+    GLTFLoader,
+    `../${props.uniqueId}/scene.gltf`,
+    draco("/draco-gltf/")
+  );
+
+  useFrame(() => (group.current.rotation.y += 0.003));
+
+  function switchItem(item) {
+    switch (item) {
+      case "prod_RqEv5xOVPoZz4j":
+        return (
+          <group
+            ref={group}
+            dispose={null}
+            castShadow
+            receiveShadow
+            position={[0, -0.5, 0]}
+          >
+            <group rotation={[-Math.PI / 2, 0, 0]}>
+              <mesh
+                material={materials.Blue_Vans_Shoe}
+                material-color={props.color}
+                geometry={nodes.mesh_0.geometry}
+                scale={[0.3, 0.3, 0.3]}
+              />
+            </group>
+          </group>
+        );
+
+      case "prod_8XxzoBMgZwPQAZ":
+        return (
+          <group ref={group} dispose={null} castShadow receiveShadow>
+            <group rotation={[-Math.PI / 2, 0, 0]}>
+              <group rotation={[Math.PI / 2, 0, 0]}>
+                <mesh
+                  material={materials.lambert1}
+                  material-color={props.color}
+                  geometry={nodes.UV_d_lambert1_0.geometry}
+                  scale={[0.8, 0.8, 0.8]}
+                />
+              </group>
+            </group>
+          </group>
+        );
+
+      default:
+        return;
+    }
+  }
+  return <>{switchItem(props.uniqueId)}</>;
+}
+```
+</details>
+
+**10. Adding a Spinner**
+
+It is always a good practice to have some immediate feedback for a user while content loads. Because the models can take some time to populate, import a `Spinner` from `react-bootstrap` and add it to `Loader.js`. Then import `HTML` from `drei` and wrap it around the `Spinner` so that the component will display properly over the `canvas` element.
+
+```js
+import React from "react";
+import { Spinner } from "react-bootstrap";
+import { HTML } from "drei";
+
+const Loader = () => (
+  <HTML>
+    <Spinner animation="border" role="status">
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  </HTML>
+);
+
+export default Loader;
+```
+Navigate back to `Animation.js` and make `<Loader >` the fallback for `<Suspense >`
+
+**11. That's it!**
+You should have an application that uses `commerce` to manage a user's cart and renders `Three.js` models of products.
+
+## Built With
+
+* [Commerce.js](https://commercejs.com/) - eCommerce SDK
+* [Drei](https://github.com/react-spring/drei) - Helper components for react-three-fiber
+* [Font Awesome](https://fontawesome.com/) - Scalable icon library
+* [Gltfjsx](https://github.com/react-spring/gltfjsx) - Converts gltf files into jsx components
+* [React.js](https://reactjs.org/) - The web framework used
+* [React-Bootstrap](https://react-bootstrap.github.io/) - CSS framework for React
+* [React-Spring](https://www.react-spring.io/) - Spring-physics based animation library
+* [React-Three-Fiber](https://github.com/react-spring/react-three-fiber) - Reconciler for Three.js
+* [Three.js](https://threejs.org/) - JavaScript 3D library
+
+## Author
+
+* **Craig Gant** - [Github](https://github.com/Andreloui5)

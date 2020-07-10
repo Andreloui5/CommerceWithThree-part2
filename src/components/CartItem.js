@@ -27,15 +27,11 @@ const CartItem = (props) => {
       </Row>
       <Row className="cartInfo">
         <Col xs={9}>
-          <Row>
-            <h4>{props.name}</h4>
-          </Row>
+          <h4>{props.name}</h4>
         </Col>
         <Col xs={3}>
           <h4> {props.price.formatted_with_symbol}</h4>
         </Col>
-      </Row>
-      <Row>
         <Col xs={10}>
           <p>
             Quantity:{" "}

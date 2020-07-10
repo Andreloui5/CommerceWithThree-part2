@@ -8,7 +8,7 @@ function Cart(props) {
   const showCart = useSpring(
     props.isCartOpen
       ? {
-          width: "50%",
+          width: "40%",
           background: "#2D3047",
           opacity: 1,
         }
@@ -28,7 +28,7 @@ function Cart(props) {
               Your cart is currently empty.
             </h3>
           ) : (
-            <>
+            <div>
               {props.cart.line_items.map((item) => (
                 <CartItem
                   key={item.id}
@@ -55,7 +55,7 @@ function Cart(props) {
                   </a>
                 </Col>
               </Row>
-            </>
+            </div>
           )}
         </div>
       ) : (
