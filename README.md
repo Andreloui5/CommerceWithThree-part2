@@ -376,7 +376,11 @@ export default App;
 
 Also, to add cart functionality, you will need to change the "Buy Now" button into an "Add to Cart" button by passing down the `addToCart()` function that you just declared in `App.js`. (Make sure to pass `addToCart={addToCart}` to the `Item` component if you have not done so already).
 
-Start by making a variable called `variantsAvailable`.
+Start by adding a hook to hold the Id of a user's chosen variables.
+```js
+const [optionId, setOptionId] = useState();
+```
+Now make a variable called `variantsAvailable`.
 ```js
 const variantsAvailable = props.variants !== undefined;
 ```
