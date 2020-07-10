@@ -13,8 +13,7 @@ This guide uses the [Commerce.js](https://commercejs.com/) SDK (v2) and is a con
 Through this project, you will:
 
  * See how Commerce.js enables highly customized eCommerce sites
- * Use [Three.js](https://threejs.org/) to build a scalable shopping cart with 3D elements
- * Use Commerce.js to track and
+ * Use Commerce.js and [Three.js](https://threejs.org/) to build a scalable shopping cart with 3D elements
 
 ### Requirements
 As with the last guide, you will need:
@@ -975,6 +974,7 @@ const { nodes, materials } = useLoader(
 <summary>Click to see the finished `Scene` component </summary>
 
 ```js
+//Scene.js
 import React, { useRef } from "react";
 import { useLoader, useFrame } from "react-three-fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -1060,6 +1060,7 @@ export default Loader;
 Navigate back to `Animation.js` and make `<Loader >` the fallback for `<Suspense >.`
 
 **11. That's it!**
+
 You should have an application that uses `commerce` to manage a user's cart and that dynamically renders `Three.js` product models.
 
 [View the live demo](https://ui56c.csb.app/)
