@@ -61,7 +61,6 @@ function App() {
         updateCart={updateCart}
         removeItemFromCart={removeItemFromCart}
       />
-      {/* maps through products and returns alternating views */}
       {products.map((product) => (
         <Item key={product.id} {...product} addToCart={addToCart} />
       ))}

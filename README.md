@@ -2,9 +2,9 @@
 
 This guide shows you how to set up a shopping cart using Commerce.js, React, Three.js, and React-Three-Fiber.
 
-This guide uses the [Commerce.js](https://commercejs.com/) SDK (v2), and is a continuation of a previous guide— [Build a Product Detail page with React and Three.js](https://github.com/Andreloui5/CommerceWithThree/blob/master/README.md)
+This guide uses the [Commerce.js](https://commercejs.com/) SDK (v2) and is a continuation of a previous guide— [Build a Product Detail page with React and Three.js](https://github.com/Andreloui5/CommerceWithThree/blob/master/README.md)
 
-[View the live demo](INSERT LINK HERE).
+[View the live demo](https://ui56c.csb.app/)
 
 ![Cart example](public/assets/Cart.gif)
 
@@ -34,7 +34,7 @@ It will help if you have some working knowledge of:
 
 ### Installation
 
-In addition to the technologies used in the last guide, you will need to use FontAwesome. Insert a link to a the FontAwesome CDN in the `index.html` file of your project's `public` folder.
+In addition to the technologies used in the previous guide, you will need to use FontAwesome. Insert a link to the FontAwesome CDN in the `index.html` file of your project's `public` folder.
 ```html
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
 ```
@@ -46,13 +46,13 @@ npm i react-spring
 
 **1. Uploading Products**
 
-If you haven't done so already, create a [Chec](https://authorize.chec.io/signup) account. Once you're logged in, navigate to **Products**.
+If you haven't done so already, create a [Chec](https://authorize.chec.io/signup) account. Once you have logged in, navigate to **Products**.
 
 ![Chec Products Tab](public/assets/Products.png)
 
-You'll want to add a few products to your list, just as you added the Fleece Jacket in the last guide. (Click **Add Product** and enter information into the required fields).
+Add a few products to your list, just as you did with the Fleece Jacket in the last guide. (Click **Add Product** and enter information into the required fields).
 
-This guide will be using a "Cotton T-Shirt" and "Vans Shoe". Both the [Cotton T-Shirt](https://sketchfab.com/3d-models/game-res-shirt-for-male-character-629d138b40054e01b82af4541e2bc16c) and the [Vans Shoe](https://sketchfab.com/3d-models/unused-blue-vans-shoe-96baa4684df7415ba8ba87d39bd1c2ee) can be downloaded for free from [sketchfab.com](https://sketchfab.com/feed).
+This guide will be using a "Cotton T-Shirt" and "Vans Shoe." You can download both the [Cotton T-Shirt](https://sketchfab.com/3d-models/game-res-shirt-for-male-character-629d138b40054e01b82af4541e2bc16c) and the [Vans Shoe](https://sketchfab.com/3d-models/unused-blue-vans-shoe-96baa4684df7415ba8ba87d39bd1c2ee) for free from [sketchfab.com](https://sketchfab.com/feed).
 
 Instead of adding only the name of the color option (Red, Blue, etc.) in the T-Shirt's variant section, include the hex value of that color as well. For example, this guide uses the color/hex values "Green #228B22", "Yellow #FFFF00", "White #FFFFFF", and "Purple #9400D3".
 
@@ -75,7 +75,7 @@ In addition to the files you have already created, you'll want to add six more t
 ```
 **3. Adding CSS**
 
-Since this guide is not primarily focused on styling, feel free to simply replace the content in your styles.css folder with the following code.
+Since this guide is not focused on styling, replace the content in your styles.css folder with the following code:
 
 <details>
 <summary>Click to show css</summary>
@@ -241,14 +241,14 @@ span .fas {
 
 **4. Handling State for your Cart**
 
-In the last guide, you used React's `useEffect()` hook to fetch data from `commerce` and the `useState()` hook to set the state of `products` in `App.js`. You will need to set up a few more hooks in order to properly handle the state of your cart.
+In the last guide, you used React's `useEffect()` hook to fetch data from `commerce` and the `useState()` hook to set the state of `products` in `App.js`. You will need to set up a few more hooks in order to handle the state of your cart properly.
 
 First, add the following to App.js
 ```js
 const [cart, setCart] = useState();
 const [numberOfItems, setNumberOfItems] = useState("");
 ```
-Then, you will add an additional call to `commerce` to retrieve the shoppers cart.
+Then add a call to `commerce` to retrieve the shopper's cart.
 ```js
  useEffect(() => {
     commerce.products.list().then((res) => {
@@ -261,7 +261,7 @@ Then, you will add an additional call to `commerce` to retrieve the shoppers car
   ```
   Using the `retrieve()` method from `commerce` makes it possible for a shopper to add something to their cart, leave the page, and still have access to their cart when they return.
 
-  You will also want to add a listener to `cart` so that you can update the `numberOfItems` in your cart (to display at the top right of the screen). Again, you can use the `useEffect()` hook, and place `cart` in the square brackets at the end of the hook. This updates the `numberOfItems` whenever the `cart` changes.
+  Next, add a listener to `cart` so that you can update the `numberOfItems` in your cart (to display at the top right of the screen). Again, you can use the `useEffect()` hook, and place `cart` in the square brackets at the end of the hook. Doing this causes the `numberOfItems` to update whenever the `cart` changes.
 ```js
 useEffect(() => {
     cart !== undefined
@@ -270,7 +270,7 @@ useEffect(() => {
   }, [cart]);
 ```
 
-Since you will be handling the state of your cart in App.js, you will also need to add handlers for adding, updating, and removing items from your cart. These handlers can then be passed down to other components via `props`. Also, if you would like to know more about the various mehods used here, check out the [Commerce.js documentation](https://commercejs.com/docs/examples/add-to-cart.html).
+Since you are handling the state of your cart in App.js, you also need to add handlers for adding, updating, and removing items from your cart. These handlers should then be passed down to other components via `props.` If you would like to know more about the various methods used here, check out the [Commerce.js documentation](https://commercejs.com/docs/examples/add-to-cart.html).
 
 To add products to your cart:
 ```js
@@ -290,16 +290,91 @@ To update your cart, or remove an item if the user makes the quantity equal to 0
         });
   };
 ```
-And to remove an item from the cart:
+To remove an item from the cart:
 ```js
   const removeItemFromCart = (itemId) => {
     commerce.cart.remove(itemId).then((res) => setCart(res.cart));
   };
 ```
 
+
+<details>
+<summary>Click to see `App.js`</summary>
+
+```js
+//App.js
+import React, { useState, useEffect } from "react";
+import Commerce from "@chec/commerce.js";
+import Item from "./components/Item";
+import Navigation from "./components/Navigation";
+
+const commerce = new Commerce(
+  "YOUR SANDBOX KEY GOES HERE"
+);
+
+function App() {
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState();
+  const [numberOfItems, setNumberOfItems] = useState("");
+
+  useEffect(() => {
+    commerce.products.list().then((res) => {
+      setProducts(res.data);
+    });
+    commerce.cart.retrieve().then((res) => {
+      setCart(res);
+    });
+  }, []);
+
+  useEffect(() => {
+    cart !== undefined
+      ? setNumberOfItems(cart.total_items)
+      : setNumberOfItems("");
+  }, [cart]);
+
+  const addToCart = (productId, variantInfo) => {
+    commerce.cart.add(productId, variantInfo).then((res) => {
+      setCart(res.cart);
+    });
+  };
+
+  const updateCart = (itemId, count) => {
+    count === 0
+      ? commerce.cart.remove(itemId).then((res) => setCart(res.cart))
+      : commerce.cart.update(itemId, { quantity: count }).then((res) => {
+          setCart(res.cart);
+        });
+  };
+
+  const removeItemFromCart = (itemId) => {
+    commerce.cart.remove(itemId).then((res) => setCart(res.cart));
+  };
+
+  return (
+    <div>
+      <Navigation
+        cart={cart}
+        products={products}
+        numberOfItems={numberOfItems}
+        updateCart={updateCart}
+        removeItemFromCart={removeItemFromCart}
+      />
+      {products.map((product) => (
+        <Item key={product.id} {...product} addToCart={addToCart} />
+      ))}
+    </div>
+  );
+}
+
+export default App;
+
+```
+</details>
+
+
 **5.Modifying Item.js**
 
-[The last guide](https://github.com/Andreloui5/CommerceWithThree) kept `Item.js` as simple as possible— and because of that, it is not easily reusable. You can make it easily reusable (and thus scalable) by drilling into the `cart` object returned from `commerce`.
+[The previous guide](https://github.com/Andreloui5/CommerceWithThree) kept `Item.js` as simple as possible— and because of that, it is not easily reusable. You can make it easily reusable (and thus scalable) by drilling into the `cart` object returned from `commerce`.
 
 Also, to add cart functionality, you will need to change the "Buy Now" button into an "Add to Cart" button by passing down the `addToCart()` function that you just declared in `App.js`.
 
@@ -307,7 +382,7 @@ Start by making a variable called `variantsAvailable`.
 ```js
 const variantsAvailable = props.variants !== undefined;
 ```
-This (combined with a ternary operator in the return section of the component) will enable `Item.js` to render properly if a product does not have any variants.
+This (combined with a ternary operator in the return section of the component) enables `Item.js` to render properly if a product does not have any variants.
 
 Additionally, since you combined the color name and hex value into one variant, write a function that will split the two apart, so that they can be used independently of one another.
 ```js
@@ -316,7 +391,7 @@ Additionally, since you combined the color name and hex value into one variant, 
   };
 ```
 
-Since you need to drill fairly far into the `cart` object to access the particulars of an item's variants, it is a good idea to make a variable that will simplify how your code reads. Combining this variable with a ternary operator lets you deal with any items that do not have variants.
+Since you need to drill fairly deep into the `cart` object to access the particulars of an item's variants, it is a good idea to make a variable that will simplify how your code reads. Combining this variable with a ternary operator lets you deal with any items that do not have variants.
 
 ```js
 let variants;
@@ -326,7 +401,7 @@ let variants;
     : (variants = null);
 ```
 
-Now make handlers for picking variant colors and for adding items to your `cart`.
+Next make handlers for picking variant colors and for adding items to your `cart.`
 
 ```js
   const handleColorChoice = (index) => {
@@ -524,7 +599,7 @@ function Navigation(props) {
 export default Navigation;
 ```
 
-To set up a cart icon that can be displayed in your navbar, open `FontAwesome.js` and create the following component.
+To set up a cart icon that can be displayed in your navbar, open `FontAwesome.js` and create the following component:
 
 ```js
 // FontAwesome.js
@@ -545,7 +620,7 @@ const FontAwesome = ({ isCartOpen, numberOfItems }) => {
 };
 export default FontAwesome;
 ```
-This component uses conditional logic to display only a shopping cart icon if the user's `cart` is empty. If the user has added items to his or her `cart`, however, the number of items in the cart is displayed alongside the cart icon.
+This component uses conditional logic to display only a shopping cart icon if the user's `cart` is empty. If the user has items in his or her `cart,` however, the number of items in the cart is displayed as well.
 
 Now, import `FontAwesome` into `Navigation.js` and place it inside of the `<Button>` in your navbar. You will also need to pass the state of `isCartOpen` and the current `numberOfItems` to `FontAwesome` via props.
 ```js
@@ -555,11 +630,22 @@ Now, import `FontAwesome` into `Navigation.js` and place it inside of the `<Butt
   />
 ```
 
+Finally, open up `App.js,` import `Navigation.js` and insert the component above the `map()` of products, and include the necessary props:
+```js
+  <Navigation
+    cart={cart}
+    products={products}
+    numberOfItems={numberOfItems}
+    updateCart={updateCart}
+    removeItemFromCart={removeItemFromCart}
+  />
+```
+
 **7. Making the Cart Itself**
 
 Next, turn your attention to `Cart.js`. Import `useSpring` and `animated` from `react-spring`. Then, instead of returning a regular `<div>`, return an `<animated.div>`. This allows react spring to animate the component. You will also need to specify the parameters of the animation. (If you want to know more about what this animation library can do, check out [react spring](https://www.react-spring.io/)).
 
-For this guide, you will need the `useSpring()` hook. This allows you to smoothly animate styling between the cart's open and closed states.
+Set up your `useSpring()` hook by declaring styling for the cart's open and closed states.
 ```js
 const showCart = useSpring(
     props.isCartOpen
@@ -578,7 +664,7 @@ const showCart = useSpring(
 
 The return value is a nested conditional statement. The first conditional statement handles the undefined state that comes while waiting for your call to commerce to complete. The second conditional toggles the cart's display between a message (if the cart is empty) and the cart's contents (once the user has added an item).
 
-`Commerce` makes it easy to map through the `line_items` that a user adds to the `cart`. For this guide, you can use the following code to set up your cart:
+`Commerce` makes it easy to map through the `line_items` that a user adds to the `cart.` For this guide, you can use the following code to set up your cart:
 
 ```js
 <>
@@ -690,9 +776,9 @@ export default Cart;
 
 **8. Making the Cart Item**
 
-In the code above, there is a component that you haven't yet made— the `CartItem`. So make that component now. You have already been passing down the `updateCart()` and `removeItemFromCart()` functions that you created in App.js, which are now joined by each line item's individual properties.
+In the code above, there is a component that you haven't yet made— the `CartItem.` Make that component now. You have already passed down the `updateCart()` and `removeItemFromCart()` functions that you created in App.js, which are now joined by each line item's individual properties.
 
-When creating the CartItem component, first integrate your functions into `onClick` event handlers.
+To create the CartItem component, first integrate your functions into `onClick` event handlers.
 
 ```js
   const handleIncrement = (e) => {
@@ -830,7 +916,7 @@ export default CartItem;
 
 **9. Different Animations in Scene.js**
 
-`Commerce` makes it easy to reference specific items by giving each one a `uniqueId`. In the last guide, you used a custom permalink as a variable to link to the appropriate scene.gltf file. For this guide, use each item's `uniqueId`.
+`Commerce` makes it easy to reference specific items by giving each one a `uniqueId`. In the last guide, you used a custom permalink as a variable to link to the appropriate scene.gltf file. For this guide, use each item's `uniqueId` and then set up a switch statement that includes the return value from each item's gltfjsx generated file.
 
 ```js
 const { nodes, materials } = useLoader(
@@ -839,7 +925,6 @@ const { nodes, materials } = useLoader(
     draco("/draco-gltf/")
   );
 ```
-Then set up a switch statement that includes the return value from each item's gltfjsx generated file.
 
 ```js
  function switchItem(item) {
@@ -887,7 +972,7 @@ Then set up a switch statement that includes the return value from each item's g
 ```
 
 <details>
-<summary>lick to see the finished `Scene` component </summary>
+<summary>Click to see the finished `Scene` component </summary>
 
 ```js
 import React, { useRef } from "react";
@@ -955,7 +1040,7 @@ export default function Model(props) {
 
 **10. Adding a Spinner**
 
-It is always a good practice to have some immediate feedback for a user while content loads. Because the models can take some time to populate, import a `Spinner` from `react-bootstrap` and add it to `Loader.js`. Then import `HTML` from `drei` and wrap it around the `Spinner` so that the component will display properly over the `canvas` element.
+It is always a good practice to have some immediate feedback for a user while content loads. Because the models can take some time to populate, import a `Spinner` from `react-bootstrap` and add it to `Loader.js.` Then import `HTML` from `drei` and wrap it around the `Spinner` so that the component will correctly display over the `canvas` element.
 
 ```js
 import React from "react";
@@ -972,10 +1057,12 @@ const Loader = () => (
 
 export default Loader;
 ```
-Navigate back to `Animation.js` and make `<Loader >` the fallback for `<Suspense >`
+Navigate back to `Animation.js` and make `<Loader >` the fallback for `<Suspense >.`
 
 **11. That's it!**
-You should have an application that uses `commerce` to manage a user's cart and renders `Three.js` models of products.
+You should have an application that uses `commerce` to manage a user's cart and that dynamically renders `Three.js` product models.
+
+[View the live demo](https://ui56c.csb.app/)
 
 ## Built With
 
