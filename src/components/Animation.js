@@ -24,7 +24,6 @@ function Animation(props) {
           minPolarAngle={Math.PI / 2}
         />
         <ambientLight intensity={0.5} />
-        {/* <pointLight intensity={1} position={[-10, -25, -10]} /> */}
         <spotLight
           castShadow
           intensity={1}

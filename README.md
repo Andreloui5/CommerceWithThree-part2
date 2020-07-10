@@ -62,7 +62,7 @@ Click **Save Changes** at the bottom of the page and open your code editor.
 
 **2. Setting up your file structure**
 
-In addition to the files you have already created, you'll want to add six more to your components folder.
+In addition to the files you have already created, you'll want to add five more to your components folder.
 ```
 |--components
 |  |--Cart.js
@@ -70,7 +70,6 @@ In addition to the files you have already created, you'll want to add six more t
 |  |--FontAwesome.js
 |  |--Loader.js
 |  |--Navigation.js
-|  |--Scene.js
 ```
 **3. Adding CSS**
 
@@ -247,7 +246,7 @@ First, add the following to App.js
 const [cart, setCart] = useState();
 const [numberOfItems, setNumberOfItems] = useState("");
 ```
-Then add a call to `commerce` to retrieve the shopper's cart.
+Then add a call to `commerce` to retrieve the shopper's cart in the existing `useEffect()` method.
 ```js
  useEffect(() => {
     commerce.products.list().then((res) => {
@@ -375,7 +374,7 @@ export default App;
 
 [The previous guide](https://github.com/Andreloui5/CommerceWithThree) kept `Item.js` as simple as possible— and because of that, it is not easily reusable. You can make it easily reusable (and thus scalable) by drilling into the `cart` object returned from `commerce`.
 
-Also, to add cart functionality, you will need to change the "Buy Now" button into an "Add to Cart" button by passing down the `addToCart()` function that you just declared in `App.js`.
+Also, to add cart functionality, you will need to change the "Buy Now" button into an "Add to Cart" button by passing down the `addToCart()` function that you just declared in `App.js`. (Make sure to pass `addToCart={addToCart}` to the `Item` component if you have not done so already).
 
 Start by making a variable called `variantsAvailable`.
 ```js
@@ -467,7 +466,6 @@ Now `Item.js` can be reused and scaled with just a few changes to what is return
   );
 }
 ```
-
 
 <details>
 <summary>Click to see the finished `Item` component</summary>
@@ -642,7 +640,7 @@ Finally, open up `App.js,` import `Navigation.js` and insert the component above
 
 **7. Making the Cart Itself**
 
-Next, turn your attention to `Cart.js`. Import `useSpring` and `animated` from `react-spring`. Then, instead of returning a regular `<div>`, return an `<animated.div>`. This allows react spring to animate the component. You will also need to specify the parameters of the animation. (If you want to know more about what this animation library can do, check out [react spring](https://www.react-spring.io/)).
+Next, turn your attention to `Cart.js`. Create a functional component and import `useSpring` and `animated` from `react-spring`. Then, instead of returning a regular `<div>`, return an `<animated.div>`. This allows react spring to animate the component. You will also need to specify the parameters of the animation. (If you want to know more about what this animation library can do, check out [react spring](https://www.react-spring.io/)).
 
 Set up your `useSpring()` hook by declaring styling for the cart's open and closed states.
 ```js
@@ -663,6 +661,28 @@ const showCart = useSpring(
 
 The return value is a nested conditional statement. The first conditional statement handles the undefined state that comes while waiting for your call to commerce to complete. The second conditional toggles the cart's display between a message (if the cart is empty) and the cart's contents (once the user has added an item).
 
+```js
+return (
+    <animated.div className="cart" style={showCart}>
+      {props.cart !== undefined ? (
+        <div>
+          {props.cart.line_items.length === 0 ? (
+            <h3 style={{ textAlign: "center" }}>
+              Your cart is currently empty.
+            </h3>
+          ) : (
+            <>
+            {/* A map through your cart's line_items will go here */}
+            </>
+          )}
+        </div>
+      ) : (
+        <></>
+        )}
+    </animated.div>
+  );
+}
+```
 `Commerce` makes it easy to map through the `line_items` that a user adds to the `cart.` For this guide, you can use the following code to set up your cart:
 
 ```js
@@ -773,9 +793,21 @@ export default Cart;
 ```
 </details>
 
+Before moving on, take a moment navigate back to `Navigation.js.` Import `Cart` and place the following code below the `Navbar` element.
+
+```js
+  <Cart
+    isCartOpen={isCartOpen}
+    cart={props.cart}
+    products={props.products}
+    updateCart={props.updateCart}
+    removeItemFromCart={props.removeItemFromCart}
+  />
+```
+
 **8. Making the Cart Item**
 
-In the code above, there is a component that you haven't yet made— the `CartItem.` Make that component now. You have already passed down the `updateCart()` and `removeItemFromCart()` functions that you created in App.js, which are now joined by each line item's individual properties.
+To complete your `cart`, you need a `CartIte.` Make that component now. You have already passed down the `updateCart()` and `removeItemFromCart()` functions that you created in App.js, which are now joined by each line item's individual properties.
 
 To create the CartItem component, first integrate your functions into `onClick` event handlers.
 
@@ -915,7 +947,7 @@ export default CartItem;
 
 **9. Different Animations in Scene.js**
 
-`Commerce` makes it easy to reference specific items by giving each one a `uniqueId`. In the last guide, you used a custom permalink as a variable to link to the appropriate scene.gltf file. For this guide, use each item's `uniqueId` and then set up a switch statement that includes the return value from each item's gltfjsx generated file.
+`Commerce` makes it easy to reference specific items by giving each one a `uniqueId`. In the last guide, you used a custom permalink as a variable to link the appropriate scene.gltf file to Scene.js. For this guide, use each item's `uniqueId` and then set up a switch statement that includes the return value from each item's gltfjsx generated file.
 
 ```js
 const { nodes, materials } = useLoader(
@@ -926,9 +958,9 @@ const { nodes, materials } = useLoader(
 ```
 
 ```js
- function switchItem(item) {
+   function switchItem(item) {
     switch (item) {
-      case "prod_RqEv5xOVPoZz4j":
+      case "ADD THE UNIQUE ID FOR VANS SHOE HERE":
         return (
           <group
             ref={group}
@@ -948,7 +980,7 @@ const { nodes, materials } = useLoader(
           </group>
         );
 
-      case "prod_8XxzoBMgZwPQAZ":
+      case "ADD THE UNIQUE ID FOR T-SHIRT HERE":
         return (
           <group ref={group} dispose={null} castShadow receiveShadow>
             <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -968,6 +1000,7 @@ const { nodes, materials } = useLoader(
         return;
     }
   }
+  return <>{switchItem(props.uniqueId)}</>;
 ```
 
 <details>
@@ -993,7 +1026,7 @@ export default function Model(props) {
 
   function switchItem(item) {
     switch (item) {
-      case "prod_RqEv5xOVPoZz4j":
+      case "ADD THE UNIQUE ID FOR VANS SHOE HERE":
         return (
           <group
             ref={group}
@@ -1013,7 +1046,7 @@ export default function Model(props) {
           </group>
         );
 
-      case "prod_8XxzoBMgZwPQAZ":
+      case "ADD THE UNIQUE ID FOR T-SHIRT HERE":
         return (
           <group ref={group} dispose={null} castShadow receiveShadow>
             <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -1037,6 +1070,20 @@ export default function Model(props) {
 }
 ```
 </details>
+
+These new models recieve light differently than the jacket did in the previous guide. So navigate to `Animation.js`, remove `<pointLight>` and then replace `<ambientLight>` and `<spotLight>` with the following:
+
+```js
+  <ambientLight intensity={0.5} />
+  <spotLight
+    castShadow
+    intensity={1}
+    angle={Math.PI / 8}
+    position={[25, 25, 15]}
+    shadow-mapSize-width={2048}
+    shadow-mapSize-height={2048}
+  />
+```
 
 **10. Adding a Spinner**
 
