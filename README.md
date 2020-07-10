@@ -1108,7 +1108,7 @@ const Loader = () => (
 
 export default Loader;
 ```
-Navigate back to `Animation.js` and make `<Loader >` the fallback for `<Suspense >.`
+Navigate back to `Animation.js` and make `<Loader>` the fallback for `<Suspense>.`
 
 **11. That's it!**
 
