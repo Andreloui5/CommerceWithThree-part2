@@ -4,7 +4,7 @@ This guide shows you how to set up a shopping cart using Commerce.js, React, Thr
 
 This guide uses the [Commerce.js](https://commercejs.com/) SDK (v2) and is a continuation of a previous guide— [Build a Product Detail page with React and Three.js](https://github.com/Andreloui5/CommerceWithThree/blob/master/README.md)
 
-[View the live demo](https://ui56c.csb.app/)
+[View the live demo](https://xg2wo.csb.app)
 
 ![Cart example](public/assets/Cart.gif)
 
@@ -1114,7 +1114,7 @@ Navigate back to `Animation.js` and make `<Loader>` the fallback for `<Suspense>
 
 You should have an application that uses `commerce` to manage a user's cart and that dynamically renders `Three.js` product models.
 
-[View the live demo](https://ui56c.csb.app/)
+[View the live demo](https://xg2wo.csb.app/)
 
 ## Built With
 
