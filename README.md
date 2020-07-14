@@ -811,7 +811,7 @@ Before moving on, take a moment navigate back to `Navigation.js.` Import `Cart` 
 
 **8. Making the Cart Item**
 
-To complete your `cart`, you need a `CartIte.` Make that component now. You have already passed down the `updateCart()` and `removeItemFromCart()` functions that you created in App.js, which are now joined by each line item's individual properties.
+To complete your `cart`, you need a `CartItem.` Make that component now. You have already passed down the `updateCart()` and `removeItemFromCart()` functions that you created in App.js, which are now joined by each line item's individual properties.
 
 To create the CartItem component, first integrate your functions into `onClick` event handlers.
 
@@ -1112,13 +1112,13 @@ Navigate back to `Animation.js` and make `<Loader>` the fallback for `<Suspense>
 
 **11. That's it!**
 
-You should have an application that uses `commerce` to manage a user's cart and that dynamically renders `Three.js` product models.
+You should have an application that uses `Commerce.js` to manage a user's cart and that dynamically renders `Three.js` product models.
 
 [View the live demo](https://xg2wo.csb.app/)
 
 ## Built With
 
-* [Commerce.js](https://commercejs.com/) - eCommerce SDK
+* [Commerce.js](https://commercejs.com/) - SDK for Chec commerce platform
 * [Drei](https://github.com/react-spring/drei) - Helper components for react-three-fiber
 * [Font Awesome](https://fontawesome.com/) - Scalable icon library
 * [Gltfjsx](https://github.com/react-spring/gltfjsx) - Converts gltf files into jsx components
