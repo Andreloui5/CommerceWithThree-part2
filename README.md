@@ -382,7 +382,7 @@ const [optionId, setOptionId] = useState();
 ```
 Now make a variable called `variantsAvailable`.
 ```js
-const variantsAvailable = props.variants !== undefined;
+const variantsAvailable = props.variants[0] !== undefined;
 ```
 This (combined with a ternary operator in the return section of the component) enables `Item.js` to render properly if a product does not have any variants.
 
