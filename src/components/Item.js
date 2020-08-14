@@ -15,7 +15,7 @@ function Item(props) {
       ? props.description.slice(3, props.description.length - 4)
       : "";
 
-  const variantsAvailable = props.variants !== undefined;
+  const variantsAvailable = props.variants[0] !== undefined;
 
   // This takes in a string (color name combined with hex color) and splits them
   const splitNameFromHex = (input) => {
