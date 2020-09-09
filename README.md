@@ -1116,6 +1116,8 @@ You should have an application that uses `Commerce.js` to manage a user's cart a
 
 [View the live demo](https://xg2wo.csb.app/)
 
+Check out the next guide in this series and learn how to [create a checkout with React and Three.js](https://github.com/Andreloui5/3DCreditCardForm).
+
 ## Built With
 
 * [Commerce.js](https://commercejs.com/) - SDK for Chec commerce platform
